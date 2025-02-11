@@ -1,0 +1,6 @@
+<FontAwesomeIcon icon={faGlobe} />
+<FontAwesomeIcon icon={faArrowLeft} />
+<FontAwesomeIcon icon={faSun} />
+<FontAwesomeIcon icon={faMoon} />
+<FontAwesomeIcon icon={faFilter} />
+<FontAwesomeIcon icon={faXmark} />

@@ -1,0 +1,150 @@
+import { StyleSheet, Text, View , KeyboardAvoidingView , TouchableWithoutFeedback , Pressable , TouchableOpacity } from 'react-native'
+import React from 'react'
+import { SafeAreaView  , Image , Modal , Dimensions} from 'react-native'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faSun } from '@fortawesome/free-solid-svg-icons/faSun'
+import { faGlobe } from '@fortawesome/free-solid-svg-icons/faGlobe'
+import {faFilter} from '@fortawesome/free-solid-svg-icons/faFilter'
+import Searchbar from '../component/Searchbar'
+import { useNavigation } from '@react-navigation/native'
+import { API_KEY, API_URL } from '../core/credentials'
+import { useEffect , useState } from 'react'
+import LanguageBottom from '../component/LanguageBottom'
+const Home = () => {
+  const headers = {
+    'Authorization': `Bearer ${API_KEY}`,
+  };
+  const [islanguageModalVisible, setIsLanguageModalVisible] = useState(false);
+
+  const openModal1 = () => {
+    setIsLanguageModalVisible(true);
+    console.log('hiiiii')
+  };
+
+  const closeModal1 = () => {
+    setIsLanguageModalVisible(false);
+    console.log('fffff')
+  };
+  const screenHeight = Dimensions.get('window').height;
+const modalHeight = screenHeight / 1.8;
+const bottomSheetHeight = screenHeight / 1.8; // Calculate the height of the bottom sheet
+
+  return (
+   <SafeAreaView>
+     <View style={{marginLeft:10 , marginRight:10 , marginTop:10}}>
+      <View style={{flexDirection:'row', marginLeft:10 , justifyContent:'space-between'}}>
+      <Text  style={{fontWeight:'bold' , color:'gray' , fontSize:25 , flex:3}}>Explore</Text>
+      <View  style={{marginRight:10 , marginTop:5}}>
+      <FontAwesomeIcon icon={faSun} size={20}   color="#888"   />  
+      </View>
+      </View>
+      <Searchbar/>
+      <View style={{flexDirection:'row', marginLeft:10 , marginTop:20, justifyContent:'space-between' }}>
+      <TouchableOpacity onPress={openModal1}>
+       <View style={styles.ifobar}>
+      <View style={{padding:10 , flexDirection:'row'}}>
+        <FontAwesomeIcon icon={faGlobe} />
+          <Text style={{fontWeight:'450' , fontSize:14 , marginLeft:5  , color:'black'}}>ENG</Text>
+        </View>
+       </View>
+      </TouchableOpacity>
+       <View style={styles.ifobar1}>
+       <View style={{padding:10 , flexDirection:'row'}}>
+        <FontAwesomeIcon icon={faFilter} />
+          <Text style={{fontWeight:'450' , fontSize:14 , marginLeft:5 , color:'black'}}>Filter</Text>
+        </View>
+       </View>
+      </View>
+      <Detail/>
+      <Modal
+      transparent={true}
+      animationType="slide"
+      visible={islanguageModalVisible}
+      onRequestClose={()=>  setIsLanguageModalVisible(false)}
+    >
+       <View style={[styles.modalContainer, { height: modalHeight }]}>
+      <LanguageBottom  setIsLanguageModalVisible={setIsLanguageModalVisible}/>
+      </View>
+    </Modal>
+    </View>
+   </SafeAreaView>
+  )
+}
+const Detail =()=>{
+  const navigation = useNavigation()
+  function move(){
+    navigation.navigate('country')
+  }
+    return (
+        <View style={{marginLeft:10 , marginTop:20}}>
+            <Text style={{fontWeight:'bold' , color:'gray' , fontSize:18}}>A</Text>
+            <TouchableWithoutFeedback onPress={move}>
+            <View style={{flexDirection:'row' , marginTop:10}} >
+                 <View style={styles.RecentImagecontainer} >
+                <Image 
+                source={require('../images/HNGPIX.jpg')} 
+                style={styles.RecentroundImage}
+                />
+             </View>
+                <View style={{flex:5 , marginTop:5}}>
+                <Text style={{fontWeight:'bold' , color:'black' , fontSize:18}}>Nigeria</Text>
+                <Text style={{fontWeight:'500' , color:'gray' , fontSize:16}}>Abuja</Text>
+                </View>
+            </View>
+
+            </TouchableWithoutFeedback>
+        </View>
+    )
+}
+export default Home
+
+const styles = StyleSheet.create({
+    RecentImagecontainer: {
+        flex: 1,
+        backgroundColor: 'transparent', 
+      },
+      RecentroundImage: {
+        width: 50,  // You can set any width you want
+        height: 50, // Same as width for a perfect circle
+        borderRadius: 10,  // Half of the width or height for a round effect
+        resizeMode: 'cover', // Or 'contain' depending on your preference
+      },
+      ifobar:{
+        // flex:1,
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 5, // Makes the container round
+        elevation: 5, // Optional: Adds shadow for Android
+        shadowColor: '#000', // Optional: Adds shadow for iOS
+        shadowOpacity: 0.1, // Optional: Adds shadow for iOS
+        shadowRadius: 10, // Optional: Adds shadow for iO
+      },
+      ifobar1:{
+        // flex:1,
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 5, // Makes the container round
+        elevation: 5, // Optional: Adds shadow for Android
+        shadowColor: '#000', // Optional: Adds shadow for iOS
+        shadowOpacity: 0.1, // Optional: Adds shadow for iOS
+        shadowRadius: 10, // Optional: Adds shadow for iO
+        marginRight:15,
+      },
+      modalContainer: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        // top:0,
+        backgroundColor: 'white',
+        padding: 20,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // backgroundColor:'#D3D3D3' 
+      },
+      
+      
+
+})
