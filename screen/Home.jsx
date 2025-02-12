@@ -96,7 +96,18 @@ const [countries, setCountries] = useState([]);
           capital: country.capital ? country.capital[0] : 'N/A', // Some countries may not have a capital
           flag: country.flags.png,
           population:country.population,
-          currency:country.currencies[0]
+          currency:  country.currencies ? Object.values(country.currencies)[0] : 'N/A',
+          driving: country.car.side ,
+          timezone:country.timezones,
+          root: country.idd.root ,
+         suffix : country.idd.suffixes ? country.idd.suffixes[0] : 'N/A',
+        //  dialingCode : `${root}${suffix !== 'N/A' ? suffix : ''}`,
+          // DailingCode : country.idd.root +  country.idd.suffixes,
+          area:country.area,
+          region:country.region,
+          language:country.languages ? country.languages[0] :'N/A',
+          coatOfArms : country.coatOfArms ? country.coatOfArms[0] : 'N/A'
+
         }));
         console.log('RESPONSE',countryData)
         

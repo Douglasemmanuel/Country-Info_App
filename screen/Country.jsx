@@ -29,12 +29,12 @@ const Country = () => {
       </View>
       </View>
      <View style={{marginTop:15}}>
-      <Crod country={country}/>
+      {/* <Crod country={country}/> */}
       <View style={{paddingTop:20}} >
-      <One/>
-     <Two/>
-     <Three/>
-     <Four/>
+      <One country={country}/>
+     <Two country={country}/>
+     <Three country={country}/>
+     <Four country={country}/>
       </View>
      </View>
     </View>
@@ -51,21 +51,21 @@ const Crod =({country})=>{
     </View>
   )
 }
-const One =()=>{
+const One =({country})=>{
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   return(
     <View style={{ marginTop:8}}>
       <View style={{flexDirection:'row',marginTop:8 }}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Population:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey' ,marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey' ,marginLeft:5}}>{country.population}</Text>
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Region:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>{country.region}</Text>
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Capital:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>{country.capital}</Text>
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text  style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Motto:</Text>
@@ -74,13 +74,13 @@ const One =()=>{
     </View>
   )
 }
-const Two =()=>{
+const Two =({country})=>{
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   return(
     <View style={{ marginTop:8}}>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Official language:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>{country.language}</Text>
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Ethic group:</Text>
@@ -97,7 +97,7 @@ const Two =()=>{
     </View>
   )
 }
-const Three =()=>{
+const Three =({country})=>{
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   return(
     <View style={{ marginTop:8}}>
@@ -107,7 +107,7 @@ const Three =()=>{
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Area:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>{country.area}</Text>
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Currency:</Text>
@@ -120,13 +120,13 @@ const Three =()=>{
     </View>
   )
 }
-const Four =()=>{
+const Four =({country})=>{
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   return(
     <View style={{ marginTop:8}}>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Time Zone:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>{country.timezone}</Text>
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Date format:</Text>
@@ -134,11 +134,11 @@ const Four =()=>{
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Dailing format:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>{country.root}{country.suffix}</Text>
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Driving side:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>{country.driving}</Text>
       </View>
     </View>
   )
