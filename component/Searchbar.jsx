@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons/faMagnifyingGlass'
 import { useState } from 'react'
 const Searchbar = () => {
@@ -19,8 +20,13 @@ const Searchbar = () => {
           placeholder="Search Country"
           placeholderTextColor="#888"
           value={searchText}
+          textAlignVertical="center"
+          textAlign="center"
           onChangeText={setSearchText}
         />
+        <TouchableOpacity>
+        <FontAwesomeIcon icon={faXmark} size={20}   color="#888"    style={styles.icon}/>  
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -48,5 +54,11 @@ const styles = StyleSheet.create({
     },
      icon: {
     marginRight: 10,
+  },
+  searchInput: {
+    flex: 1, // Makes the input take up remaining space
+    height: '100%',
+    fontSize: 16,
+    color: '#333',
   },
 })

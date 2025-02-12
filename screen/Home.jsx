@@ -1,21 +1,24 @@
-import { StyleSheet, Text, View , KeyboardAvoidingView , TouchableWithoutFeedback , Pressable , TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View , KeyboardAvoidingView , TouchableWithoutFeedback , Pressable , TouchableOpacity , ScrollView } from 'react-native'
 import React from 'react'
 import { SafeAreaView  , Image , Modal , Dimensions} from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faSun } from '@fortawesome/free-solid-svg-icons/faSun'
 import { faGlobe } from '@fortawesome/free-solid-svg-icons/faGlobe'
+import { faMoon} from '@fortawesome/free-solid-svg-icons/faMoon'
+
 import {faFilter} from '@fortawesome/free-solid-svg-icons/faFilter'
 import Searchbar from '../component/Searchbar'
 import { useNavigation } from '@react-navigation/native'
 import { API_KEY, API_URL } from '../core/credentials'
-import { useEffect , useState } from 'react'
+import { useEffect , useState , useContext } from 'react'
+import { ThemeContext } from '../context/ThemeContext'
 import LanguageBottom from '../component/LanguageBottom'
 const Home = () => {
   const headers = {
     'Authorization': `Bearer ${API_KEY}`,
   };
   const [islanguageModalVisible, setIsLanguageModalVisible] = useState(false);
-
+  const navigation = useNavigation()
   const openModal1 = () => {
     setIsLanguageModalVisible(true);
     console.log('hiiiii')
@@ -25,20 +28,33 @@ const Home = () => {
     setIsLanguageModalVisible(false);
     console.log('fffff')
   };
+  const move =()=>{
+    navigation.navigate('search')
+  }
   const screenHeight = Dimensions.get('window').height;
 const modalHeight = screenHeight / 1.8;
 const bottomSheetHeight = screenHeight / 1.8; // Calculate the height of the bottom sheet
-
+const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   return (
-   <SafeAreaView>
-     <View style={{marginLeft:10 , marginRight:10 , marginTop:10}}>
+   <SafeAreaView style={{flex: 1}} >
+     
+     <View style={[styles.container , isDarkMode ? styles.darkModeContainer : styles.lightModeContainer]}>
       <View style={{flexDirection:'row', marginLeft:10 , justifyContent:'space-between'}}>
-      <Text  style={{fontWeight:'bold' , color:'gray' , fontSize:25 , flex:3}}>Explore</Text>
+      <Text  style={[styles.exploretext, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Explore</Text>
       <View  style={{marginRight:10 , marginTop:5}}>
-      <FontAwesomeIcon icon={faSun} size={20}   color="#888"   />  
+        <TouchableOpacity onPress={toggleTheme}>
+          {isDarkMode ? 
+            <FontAwesomeIcon icon={faSun} size={20}   color="white"   />  
+            :
+            <FontAwesomeIcon icon={faMoon} size={20}   color="#888"   />  
+        }
+      
+        </TouchableOpacity>
       </View>
       </View>
-      <Searchbar/>
+     <TouchableOpacity onPress={move}>
+     <Searchbar/>
+     </TouchableOpacity>
       <View style={{flexDirection:'row', marginLeft:10 , marginTop:20, justifyContent:'space-between' }}>
       <TouchableOpacity onPress={openModal1}>
        <View style={styles.ifobar}>
@@ -62,10 +78,20 @@ const bottomSheetHeight = screenHeight / 1.8; // Calculate the height of the bot
       visible={islanguageModalVisible}
       onRequestClose={()=>  setIsLanguageModalVisible(false)}
     >
-       <View style={[styles.modalContainer, { height: modalHeight }]}>
+       <View style={[styles.modalContainer, { height: modalHeight }, isDarkMode ? styles.darkModeContainer : styles.lightModeContainer]}>
       <LanguageBottom  setIsLanguageModalVisible={setIsLanguageModalVisible}/>
       </View>
     </Modal>
+    {/* <Modal
+      transparent={true}
+      animationType="slide"
+      visible={islanguageModalVisible}
+      onRequestClose={()=>  setIsLanguageModalVisible(false)}
+    >
+       <View style={[styles.modalContainer, { height: modalHeight }]}>
+      <LanguageBottom  setIsLanguageModalVisible={setIsLanguageModalVisible}/>
+      </View>
+    </Modal> */}
     </View>
    </SafeAreaView>
   )
@@ -75,6 +101,7 @@ const Detail =()=>{
   function move(){
     navigation.navigate('country')
   }
+  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
     return (
         <View style={{marginLeft:10 , marginTop:20}}>
             <Text style={{fontWeight:'bold' , color:'gray' , fontSize:18}}>A</Text>
@@ -87,7 +114,7 @@ const Detail =()=>{
                 />
              </View>
                 <View style={{flex:5 , marginTop:5}}>
-                <Text style={{fontWeight:'bold' , color:'black' , fontSize:18}}>Nigeria</Text>
+                <Text style={[styles.county_name, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Nigeria</Text>
                 <Text style={{fontWeight:'500' , color:'gray' , fontSize:16}}>Abuja</Text>
                 </View>
             </View>
@@ -136,7 +163,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         // top:0,
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
         padding: 20,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
@@ -144,7 +171,37 @@ const styles = StyleSheet.create({
         // alignItems: 'center',
         // backgroundColor:'#D3D3D3' 
       },
-      
+      exploretext:{
+          flex:3,
+          fontSize:25,
+          color:'black',
+          fontWeight:'bold',
+      },
+      darkModeText:{
+        color:'white'
+      },
+      lightModeText:{
+        color:'black',
+      },
+      darkModeContainer:{
+        backgroundColor:'black'
+      },
+      lightModeContainer:{
+        backgroundColor:'white',
+      },
+      container:{
+        paddingLeft:10 ,
+        paddingRight:10 , 
+        paddingTop:10 ,
+        flex: 1,
+      },
+      county_name:{
+        fontWeight:'bold',
+        fontSize:18
+      },
+      icon:{
+
+      }
       
 
 })

@@ -4,3 +4,4 @@
 <FontAwesomeIcon icon={faMoon} />
 <FontAwesomeIcon icon={faFilter} />
 <FontAwesomeIcon icon={faXmark} />
+<FontAwesomeIcon icon={faCircleChevronDown} />
