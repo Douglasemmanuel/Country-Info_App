@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View , KeyboardAvoidingView , TouchableWithoutFeedback , Pressable , TouchableOpacity , ScrollView } from 'react-native'
 import React from 'react'
-import { SafeAreaView  , Image , Modal , Dimensions} from 'react-native'
+import { SafeAreaView  , Image , Modal , Dimensions , SectionList , ActivityIndicator} from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faSun } from '@fortawesome/free-solid-svg-icons/faSun'
 import { faGlobe } from '@fortawesome/free-solid-svg-icons/faGlobe'
@@ -13,10 +13,12 @@ import { useEffect , useState , useContext } from 'react'
 import { ThemeContext } from '../context/ThemeContext'
 import LanguageBottom from '../component/LanguageBottom'
 import FilterBottom from '../component/FilterBottom'
+import axios from 'axios'
+import { FlatList } from 'react-native'
 const Home = () => {
-  const headers = {
-    'Authorization': `Bearer ${API_KEY}`,
-  };
+  // const headers = {
+  //   'Authorization': `Bearer ${API_KEY}`,
+  // };
   const [islanguageModalVisible, setIsLanguageModalVisible] = useState(false);
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
   const [isDetail1Expanded, setIsDetail1Expanded] = useState(false);
@@ -53,6 +55,91 @@ const FilterHeight = screenHeight / 4;
 const ActualHeight = screenHeight / 1.3;
 const bottomSheetHeight = screenHeight / 1.8; // Calculate the height of the bottom sheet
 const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+const [countries, setCountries] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
+
+  // useEffect(() => {
+  //   // Fetching the country data when the component mounts
+  //   const fetchCountries = async () => {
+  //     try {
+  //       const response = await axios.get('https://restcountries.com/v3.1/all');
+  //       const countryNames = response.data.map(country => country.name.common);
+  //       const info = response.data
+  //       const roo = info.independent
+  //       console.log('response' , countryNames)
+
+  //       // Sorting countries by the first letter of their common name
+  //       const sortedCountries = countryNames.sort((a, b) => {
+  //         const nameA = a.name.common.toLowerCase();  // Lowercase country name for case-insensitive sorting
+  //         const nameB = b.name.common.toLowerCase();
+  //         return nameA.localeCompare(nameB);  // Compare names alphabetically
+  //       });
+  //       setCountries(sortedCountries); // Set the sorted countries in state
+  //     } catch (error) {
+  //       console.error('Error fetching countries data:', error);
+  //     } finally {
+  //       setLoading(false); // Stop loading
+  //     }
+  //   };
+
+  //   fetchCountries();
+  // }, []);
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await axios.get('https://restcountries.com/v3.1/all');
+        
+        // Extract country names, capitals, and flags
+        const countryData = response.data.map((country,index) => ({
+          index: index,
+          name: country.name.common,
+          capital: country.capital ? country.capital[0] : 'N/A', // Some countries may not have a capital
+          flag: country.flags.png,
+          population:country.population,
+          currency:country.currencies[0]
+        }));
+        console.log('RESPONSE',countryData)
+        
+        // Sort countries by their name's first letter
+        const sortedCountries = countryData.sort((a, b) => {
+          const nameA = a.name.toLowerCase();
+          const nameB = b.name.toLowerCase();
+          if (nameA < nameB) return -1;
+          if (nameA > nameB) return 1;
+          return 0;
+        });
+
+        // Group countries by their first letter
+        const groupedCountries = groupByFirstLetter(sortedCountries);
+        
+        setCountries(groupedCountries); // Set the sorted and grouped country data
+      } catch (error) {
+        console.error('Error fetching countries data:', error);
+      } finally {
+        setLoading(false); // Stop loading once data is fetched
+      }
+    };
+
+    fetchCountries();
+  }, []);
+
+  // Helper function to group countries by their first letter
+  const groupByFirstLetter = (countryData) => {
+    const grouped = countryData.reduce((acc, country) => {
+      const firstLetter = country.name.charAt(0).toUpperCase();
+      if (!acc[firstLetter]) {
+        acc[firstLetter] = [];
+      }
+      acc[firstLetter].push(country);
+      return acc;
+    }, {});
+
+    // Convert the object into an array of sections
+    return Object.keys(grouped).map(letter => ({
+      title: letter,
+      data: grouped[letter],
+    }));
+  };
   return (
    <SafeAreaView style={{flex: 1}} >
      
@@ -92,7 +179,24 @@ const { isDarkMode, toggleTheme } = useContext(ThemeContext);
        </View>
        </TouchableOpacity>
       </View>
-      <Detail/>
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <FlatList
+          data={countries}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={{marginLeft:20}}>
+              {/* Render section header for each letter */}
+              {renderHeader(item.title)}
+              {item.data.map((country, idx) => (
+             <Detail key={idx} item={country} />
+            ))}
+            </View>
+          )}
+        />
+      )}
+        {/* <Detail item={item}/> */}
       <Modal
       transparent={true}
       animationType="slide"
@@ -142,26 +246,34 @@ const { isDarkMode, toggleTheme } = useContext(ThemeContext);
    </SafeAreaView>
   )
 }
-const Detail =()=>{
+ // Function to render section header (first letter)
+ const renderHeader = (letter) => (
+  <View>
+    <Text style={{fontWeight:'bold' , color:'gray' , fontSize:18 , paddingTop:20}}>{letter}</Text>
+  </View>
+);
+const Detail =({item})=>{
   const navigation = useNavigation()
+  const countryId = item.name
+  // console.log('COUNTRY',countryName)
   function move(){
-    navigation.navigate('country')
+    navigation.navigate('country' ,{ country: item })
   }
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
     return (
-        <View style={{marginLeft:10 , marginTop:20}}>
-            <Text style={{fontWeight:'bold' , color:'gray' , fontSize:18}}>A</Text>
+        <View style={{ marginTop:20}}>
+            {/* <Text style={{fontWeight:'bold' , color:'gray' , fontSize:18}}>hhh</Text> */}
             <TouchableWithoutFeedback onPress={move}>
-            <View style={{flexDirection:'row' , marginTop:10}} >
+            <View style={{flexDirection:'row' }} >
                  <View style={styles.RecentImagecontainer} >
                 <Image 
-                source={require('../images/HNGPIX.jpg')} 
+                source={{ uri: item.flag }}  
                 style={styles.RecentroundImage}
                 />
              </View>
                 <View style={{flex:5 , marginTop:5}}>
-                <Text style={[styles.county_name, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Nigeria</Text>
-                <Text style={{fontWeight:'500' , color:'gray' , fontSize:16}}>Abuja</Text>
+                <Text style={[styles.county_name, isDarkMode ? styles.darkModeText : styles.lightModeText]}>{item.name}</Text>
+                <Text style={{fontWeight:'500' , color:'gray' , fontSize:16}}>{item.capital}</Text>
                 </View>
             </View>
 

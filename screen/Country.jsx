@@ -5,12 +5,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft'
 import { useNavigation } from '@react-navigation/native'
 import { ThemeContext } from '../context/ThemeContext'
-import { useContext } from 'react'
+import { API_KEY, API_URL } from '../core/credentials'
+import { useEffect , useState , useContext } from 'react'
+import { useRoute } from '@react-navigation/native'
 const Country = () => {
   const navigation = useNavigation()
+  const route = useRoute()
+  const { country } = route.params;
   function move(){
     navigation.goBack()
   }
+  console.log('COUNTRY',country.name)
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   return (
    <SafeAreaView style={{flex:1}}>
@@ -20,26 +25,29 @@ const Country = () => {
       <FontAwesomeIcon icon={faArrowLeft} size={22}   color={isDarkMode ? "white" : "black"}  />
       </Pressable>
       <View  style={{justifyContent: 'center', alignItems: 'center' , flex:1 }}>
-      <Text style={[styles.title, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Country</Text>
+      <Text style={[styles.title, isDarkMode ? styles.darkModeText : styles.lightModeText]}>{country.name}</Text>
       </View>
       </View>
      <View style={{marginTop:15}}>
-      <Crod/>
-     <One/>
+      <Crod country={country}/>
+      <View style={{paddingTop:20}} >
+      <One/>
      <Two/>
      <Three/>
      <Four/>
+      </View>
      </View>
     </View>
    </SafeAreaView>
   )
 }
-const Crod =()=>{
+const Crod =({country})=>{
   return (
-    <View>
+    <View style={styles.RecentImagecontainer}>
       <Image 
-                source={require('../images/HNGPIX.jpg')}
-                />
+          source={{ uri: country.flag }} 
+          style={styles.RecentroundImage}
+          />
     </View>
   )
 }
@@ -164,5 +172,15 @@ const styles = StyleSheet.create({
   pagtitle:{
     fontWeight:'bold',
     fontSize:18,
-  }
+  },
+  RecentImagecontainer: {
+    flex: 1,
+    // backgroundColor: 'transparent', 
+  },
+  RecentroundImage: {
+    width: 400,  // You can set any width you want
+    height: 200, // Same as width for a perfect circle
+    borderRadius: 10,  // Half of the width or height for a round effect
+    resizeMode: 'cover', // Or 'contain' depending on your preference
+  },
 })
