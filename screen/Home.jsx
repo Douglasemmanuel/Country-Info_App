@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faSun } from '@fortawesome/free-solid-svg-icons/faSun'
 import { faGlobe } from '@fortawesome/free-solid-svg-icons/faGlobe'
 import { faMoon} from '@fortawesome/free-solid-svg-icons/faMoon'
-
 import {faFilter} from '@fortawesome/free-solid-svg-icons/faFilter'
 import Searchbar from '../component/Searchbar'
 import { useNavigation } from '@react-navigation/native'
@@ -13,14 +12,29 @@ import { API_KEY, API_URL } from '../core/credentials'
 import { useEffect , useState , useContext } from 'react'
 import { ThemeContext } from '../context/ThemeContext'
 import LanguageBottom from '../component/LanguageBottom'
+import FilterBottom from '../component/FilterBottom'
 const Home = () => {
   const headers = {
     'Authorization': `Bearer ${API_KEY}`,
   };
   const [islanguageModalVisible, setIsLanguageModalVisible] = useState(false);
+  const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+  const [isDetail1Expanded, setIsDetail1Expanded] = useState(false);
+  const [isDetail2Expanded, setIsDetail2Expanded] = useState(false);
+  const handleDetail1Click = () => {
+    setIsDetail1Expanded(prevState => !prevState);
+  };
+
+  const handleDetail2Click = () => {
+    setIsDetail2Expanded(prevState => !prevState);
+  };
   const navigation = useNavigation()
   const openModal1 = () => {
     setIsLanguageModalVisible(true);
+    console.log('hiiiii')
+  };
+  const openModal2 = () => {
+    setIsFilterModalVisible(true);
     console.log('hiiiii')
   };
 
@@ -31,8 +45,12 @@ const Home = () => {
   const move =()=>{
     navigation.navigate('search')
   }
-  const screenHeight = Dimensions.get('window').height;
-const modalHeight = screenHeight / 1.8;
+const screenHeight = Dimensions.get('window').height;
+const modalHeight = screenHeight / 1.6;
+const Expand1Height = screenHeight / 2;
+const Expand2Height = screenHeight / 1.9;
+const FilterHeight = screenHeight / 4;
+const ActualHeight = screenHeight / 1.3;
 const bottomSheetHeight = screenHeight / 1.8; // Calculate the height of the bottom sheet
 const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   return (
@@ -40,13 +58,14 @@ const { isDarkMode, toggleTheme } = useContext(ThemeContext);
      
      <View style={[styles.container , isDarkMode ? styles.darkModeContainer : styles.lightModeContainer]}>
       <View style={{flexDirection:'row', marginLeft:10 , justifyContent:'space-between'}}>
+        {/* <Image source={require('../images/logo.jpg')} style={styles.RecentroundImage2}/> */}
       <Text  style={[styles.exploretext, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Explore</Text>
       <View  style={{marginRight:10 , marginTop:5}}>
         <TouchableOpacity onPress={toggleTheme}>
           {isDarkMode ? 
-            <FontAwesomeIcon icon={faSun} size={20}   color="white"   />  
+            <FontAwesomeIcon icon={faMoon} size={20}   color="white"   />  
             :
-            <FontAwesomeIcon icon={faMoon} size={20}   color="#888"   />  
+            <FontAwesomeIcon icon={faSun} size={20}   color="grey"   />  
         }
       
         </TouchableOpacity>
@@ -64,12 +83,14 @@ const { isDarkMode, toggleTheme } = useContext(ThemeContext);
         </View>
        </View>
       </TouchableOpacity>
+       <TouchableOpacity onPress={openModal2}>
        <View style={styles.ifobar1}>
        <View style={{padding:10 , flexDirection:'row'}}>
         <FontAwesomeIcon icon={faFilter} />
           <Text style={{fontWeight:'450' , fontSize:14 , marginLeft:5 , color:'black'}}>Filter</Text>
         </View>
        </View>
+       </TouchableOpacity>
       </View>
       <Detail/>
       <Modal
@@ -80,6 +101,31 @@ const { isDarkMode, toggleTheme } = useContext(ThemeContext);
     >
        <View style={[styles.modalContainer, { height: modalHeight }, isDarkMode ? styles.darkModeContainer : styles.lightModeContainer]}>
       <LanguageBottom  setIsLanguageModalVisible={setIsLanguageModalVisible}/>
+      </View>
+    </Modal>
+    <Modal
+      transparent={true}
+      animationType="slide"
+      visible={isFilterModalVisible}
+      onRequestClose={()=>  setIsFilterModalVisible(false)}
+    >
+      <View style={[styles.modalContainer, 
+        // { height: FilterHeight },
+        {
+          height: (() => {
+            if (isDetail1Expanded && isDetail2Expanded) {
+              return ActualHeight;
+            }else if(isDetail1Expanded){
+              return Expand1Height;
+            }else if (isDetail2Expanded) {
+              return Expand2Height;
+            } else {
+              return FilterHeight; // Default to initial state (FilterHeight)
+            }
+          })()
+        }, 
+         isDarkMode ? styles.darkModeContainer : styles.lightModeContainer]}>
+      <FilterBottom setIsFilterModalVisible={setIsFilterModalVisible} isDetail1Expanded={isDetail1Expanded}  isDetail2Expanded={isDetail2Expanded} handleDetail1Click={handleDetail1Click} handleDetail2Click={handleDetail2Click} setIsDetail1Expanded={setIsDetail1Expanded} setIsDetail2Expanded={setIsDetail2Expanded} />
       </View>
     </Modal>
     {/* <Modal
@@ -136,6 +182,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,  // Half of the width or height for a round effect
         resizeMode: 'cover', // Or 'contain' depending on your preference
       },
+      RecentroundImage2: {
+        width: 380,  // You can set any width you want
+        height: 32, // Same as width for a perfect circle
+        borderRadius: 10,  // Half of the width or height for a round effect
+        resizeMode: 'cover', // Or 'contain' depending on your preference
+      },
       ifobar:{
         // flex:1,
         alignItems: 'center',
@@ -167,6 +219,10 @@ const styles = StyleSheet.create({
         padding: 20,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
         // justifyContent: 'center',
         // alignItems: 'center',
         // backgroundColor:'#D3D3D3' 
@@ -184,7 +240,7 @@ const styles = StyleSheet.create({
         color:'black',
       },
       darkModeContainer:{
-        backgroundColor:'black'
+        backgroundColor:'#2F3A4D'
       },
       lightModeContainer:{
         backgroundColor:'white',

@@ -3,7 +3,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark'
 import { Modal } from 'react-native'
-import { useContext } from 'react'
+import { useContext , useState } from 'react'
 import { ThemeContext } from '../context/ThemeContext'
 const LanguageBottom = ({  setIsLanguageModalVisible }) => {
     const Finish= ()=>{
@@ -18,9 +18,13 @@ const LanguageBottom = ({  setIsLanguageModalVisible }) => {
 }
 const Nod =({Finish})=>{
     const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+    const [selectedValue, setSelectedValue] = useState(false);
+    const handlePress = () => {
+    setSelectedValue(prevState => !prevState);
+        };
     return (
         <View >
-            <View style={{flexDirection:'row' , justifyContent:'space-between'}}>
+            <View style={{flexDirection:'row' , justifyContent:'space-between' , gap:48}}>
             <Text style={[styles.tagd, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Languages</Text>
             <View >
             <TouchableOpacity  onPress={Finish} >
@@ -30,63 +34,116 @@ const Nod =({Finish})=>{
            </TouchableOpacity>
             </View>
             </View>
-            <View style={{marginTop:6}}>
-            <View style={{flexDirection:'row' , marginTop:7, justifyContent:'space-between'}}>
+            <View style={{marginTop:24}}>
+            <View style={{flexDirection:'row' , marginTop:12, justifyContent:'space-between' , gap:48}}>
             <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Bahasa</Text>
-            <View style={{flex:1}}></View>
+            <TouchableOpacity onPress={handlePress}>
+          <View style={styles.radioButton}>
+          <View style={styles.radioButtonInner} />
+           
+          </View>
+        </TouchableOpacity>
         </View>
-        <View style={{flexDirection:'row' , marginTop:7, justifyContent:'space-between'}}>
+        
+        <View style={{flexDirection:'row' , marginTop:12, justifyContent:'space-between', gap:48}}>
             <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Deutsch</Text>
-            <View style={{flex:1}}></View>
+            <TouchableOpacity onPress={handlePress}>
+          <View style={styles.radioButton}>
+          <View style={styles.radioButtonInner} />
+           
+          </View>
+        </TouchableOpacity>
         </View>
-        <View style={{flexDirection:'row' , marginTop:7}}>
+        <View style={{flexDirection:'row' , marginTop:12, gap:48}}>
             <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>English</Text>
-            <View style={{flex:1}}></View>
+            <TouchableOpacity onPress={handlePress}>
+          <View style={styles.radioButton}>
+          <View style={styles.radioButtonInner} />
+          </View>
+        </TouchableOpacity>
         </View>
-        <View style={{flexDirection:'row' , marginTop:7}}>
-            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Bahasa</Text>
-            <View style={{flex:1}}></View>
+        <View style={{flexDirection:'row' , marginTop:12 , gap:48}}>
+            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Español</Text>
+            <TouchableOpacity onPress={handlePress}>
+          <View style={styles.radioButton}>
+          <View style={styles.radioButtonInner} />
+           
+          </View>
+        </TouchableOpacity>
         </View>
-        <View style={{flexDirection:'row' , marginTop:7}}>
-            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Bahasa</Text>
-            <View style={{flex:1}}></View>
+        <View style={{flexDirection:'row' , marginTop:12,gap:48}}>
+            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>italiano</Text>
+            <TouchableOpacity onPress={handlePress}>
+          <View style={styles.radioButton}>
+          <View style={styles.radioButtonInner} />
+           
+          </View>
+        </TouchableOpacity>
         </View>
-        <View style={{flexDirection:'row' , marginTop:7}}>
-            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Bahasa</Text>
-            <View style={{flex:1}}></View>
+        <View style={{flexDirection:'row' , marginTop:12 , gap:48}}>
+            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>português</Text>
+            <TouchableOpacity onPress={handlePress}>
+          <View style={styles.radioButton}>
+          <View style={styles.radioButtonInner} />
+           
+          </View>
+        </TouchableOpacity>
         </View>
-        <View style={{flexDirection:'row' , marginTop:7}}>
-            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Bahasa</Text>
-            <View style={{flex:1}}></View>
+        <View style={{flexDirection:'row' , marginTop:12 , gap:48}}>
+            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>pycckuu</Text>
+            <TouchableOpacity onPress={handlePress}>
+          <View style={styles.radioButton}>
+          <View style={styles.radioButtonInner} />
+           
+          </View>
+        </TouchableOpacity>
         </View>
-        <View style={{flexDirection:'row' , marginTop:7}}>
-            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Bahasa</Text>
-            <View style={{flex:1}}></View>
+        <View style={{flexDirection:'row' , marginTop:12, gap:48}}>
+            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>svenska</Text>
+            <TouchableOpacity onPress={handlePress}>
+          <View style={styles.radioButton}>
+          <View style={styles.radioButtonInner} />
+           
+          </View>
+        </TouchableOpacity>
         </View>
-        <View style={{flexDirection:'row' , marginTop:7}}>
-            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Bahasa</Text>
-            <View style={{flex:1}}></View>
+        <View style={{flexDirection:'row' , marginTop:12,gap:48}}>
+            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>türkçe</Text>
+            <TouchableOpacity onPress={handlePress}>
+          <View style={styles.radioButton}>
+          <View style={styles.radioButtonInner} />
+           
+          </View>
+        </TouchableOpacity>
         </View>
-        <View style={{flexDirection:'row' , marginTop:7}}>
-            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Bahasa</Text>
-            <View style={{flex:1}}></View>
+        <View style={{flexDirection:'row' , marginTop:12 ,gap:48}}>
+            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}> 语 漢語</Text>
+            <TouchableOpacity onPress={handlePress}>
+          <View style={styles.radioButton}>
+          <View style={styles.radioButtonInner} />
+           
+          </View>
+        </TouchableOpacity>
         </View>
-        <View style={{flexDirection:'row' , marginTop:7}}>
-            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Bahasa</Text>
-            <View style={{flex:1}}></View>
+        <View style={{flexDirection:'row' , marginTop:12,gap:48}}>
+            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}> العربية</Text>
+            <TouchableOpacity onPress={handlePress}>
+          <View style={styles.radioButton}>
+          <View style={styles.radioButtonInner} />
+           
+          </View>
+        </TouchableOpacity>
         </View>
-        <View style={{flexDirection:'row' , marginTop:7}}>
-            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Bahasa</Text>
-            <View style={{flex:1}}></View>
+        <View style={{flexDirection:'row' , marginTop:12,gap:48}}>
+            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>मानक </Text>
+            <TouchableOpacity onPress={handlePress}>
+          <View style={styles.radioButton}>
+          <View style={styles.radioButtonInner} />
+           
+          </View>
+        </TouchableOpacity>
         </View>
-        <View style={{flexDirection:'row' , marginTop:7}}>
-            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Bahasa</Text>
-            <View style={{flex:1}}></View>
-        </View>
-        <View style={{flexDirection:'row' , marginTop:7}}>
-            <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Bahasa</Text>
-            <View style={{flex:1}}></View>
-        </View>
+       
             </View>
 
         </View>
@@ -105,7 +162,7 @@ const styles = StyleSheet.create({
         shadowColor: '#000', // Optional: Adds shadow for iOS
         shadowOpacity: 0.1, // Optional: Adds shadow for iOS
         shadowRadius: 10, // Optional: Adds shadow for iO
-        marginRight:15,
+        // marginRight:15,
         padding:7,
       },
       darkModeText:{
@@ -122,15 +179,31 @@ const styles = StyleSheet.create({
       },
       tagd:{
         fontSize:20,
-        fontWeight:'800'
-        // paddingLeft:10 ,
-        // paddingRight:10 , 
-        // paddingTop:10 ,
-        // flex: 1,
+        fontWeight:'800',
       },
       pagtitle:{
-        fontWeight:'bold',
+        fontWeight:'600',
         flex:1,
         fontSize:18,
-      }
+      },
+      radioButtonContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        // marginVertical: 10,
+      },
+      radioButton: {
+        width: 20,
+        height: 20,
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      radioButtonInner: {
+        width: 15,
+        height: 15,
+        borderRadius: 8,
+        backgroundColor: 'black',
+      },
 })

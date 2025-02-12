@@ -3,9 +3,17 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons/faXmark'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons/faMagnifyingGlass'
-import { useState } from 'react'
+import { useState , useContext } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import { ThemeContext } from '../context/ThemeContext'
 const Searchbar = () => {
+  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
     const [searchText, setSearchText] = useState('');
+    const navigation = useNavigation()
+    const handleClearText = () => {
+      setSearchText('');
+      navigation.goBack(); // Assuming you're using React Navigation to navigate
+    };
   return (
     <View style={styles.container2}>
       <View style={styles.searchBarContainer}>
@@ -24,9 +32,11 @@ const Searchbar = () => {
           textAlign="center"
           onChangeText={setSearchText}
         />
-        <TouchableOpacity>
+        {searchText.length > 0 && (
+        <TouchableOpacity onPress={ handleClearText}>
         <FontAwesomeIcon icon={faXmark} size={20}   color="#888"    style={styles.icon}/>  
         </TouchableOpacity>
+        )}
       </View>
     </View>
   )
