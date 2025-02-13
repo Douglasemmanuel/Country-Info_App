@@ -6,9 +6,9 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons/faMagnifyin
 import { useState , useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { ThemeContext } from '../context/ThemeContext'
-const Searchbar = () => {
+const Searchbar = ({searchText , setSearchText}) => {
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
-    const [searchText, setSearchText] = useState('');
+    // const [searchText, setSearchText] = useState('');
     const navigation = useNavigation()
     const handleClearText = () => {
       setSearchText('');

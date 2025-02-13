@@ -56,6 +56,7 @@ const ActualHeight = screenHeight / 1.3;
 const bottomSheetHeight = screenHeight / 1.8; // Calculate the height of the bottom sheet
 const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 const [countries, setCountries] = useState([]);
+const [carouselImages , setCarouselImages] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
 
   // useEffect(() => {
@@ -90,26 +91,64 @@ const [countries, setCountries] = useState([]);
         const response = await axios.get('https://restcountries.com/v3.1/all');
         
         // Extract country names, capitals, and flags
-        const countryData = response.data.map((country,index) => ({
-          index: index,
-          name: country.name.common,
-          capital: country.capital ? country.capital[0] : 'N/A', // Some countries may not have a capital
-          flag: country.flags.png,
-          population:country.population,
-          currency:  country.currencies ? Object.values(country.currencies)[0] : 'N/A',
-          driving: country.car.side ,
-          timezone:country.timezones,
-          root: country.idd.root ,
-         suffix : country.idd.suffixes ? country.idd.suffixes[0] : 'N/A',
-        //  dialingCode : `${root}${suffix !== 'N/A' ? suffix : ''}`,
-          // DailingCode : country.idd.root +  country.idd.suffixes,
-          area:country.area,
-          region:country.region,
-          language:country.languages ? country.languages[0] :'N/A',
-          coatOfArms : country.coatOfArms ? country.coatOfArms[0] : 'N/A'
-
-        }));
-        console.log('RESPONSE',countryData)
+        const countryData = response.data.map((country, index) => {
+          // Initialize an array to store images (flag and coatOfArms)
+          const images = [];
+        
+          // Add flag if it exists
+          if (country.flags && country.flags.png) {
+            images.push(country.flags.png);
+          }
+        
+          // Add coat of arms if it exists
+          if (country.coatOfArms && country.coatOfArms.png) {
+            images.push(country.coatOfArms.png);
+          }
+        
+          return {
+            index: index,
+            name: country.name.common,
+            capital: country.capital ? country.capital[0] : 'N/A', // Some countries may not have a capital
+            images: images, // Array containing flag and coat of arms
+            population: country.population,
+            currency: country.currencies ? Object.values(country.currencies)[0] : 'N/A',
+            driving: country.car ? country.car.side : 'N/A',
+            timezone: country.timezones ? country.timezones.join(', ') : 'N/A', // Ensure it's a string
+            root: country.idd ? country.idd.root : 'N/A',
+            suffix: country.idd && country.idd.suffixes ? country.idd.suffixes[0] : 'N/A',
+            area: country.area,
+            flag: country.flags.png,
+            coatOfArms : country.coatOfArms.png,
+            region: country.region,
+            independent: country.independent,
+            language: country.languages ? Object.values(country.languages).join(', ') : 'N/A',
+            map: country.maps ? country.maps.googleMaps : 'N/A',
+          };
+        });
+        
+        // const countryData = response.data.map((country,index) => (
+          
+         
+        // {
+        //   index: index,
+        //   name: country.name.common,
+        //   capital: country.capital ? country.capital[0] : 'N/A', // Some countries may not have a capital
+        //   flag: country.flags.png,
+        //   population:country.population,
+        //   currency : country.currencies ? Object.values(country.currencies)[0] : 'N/A',
+        //   driving: country.car.side ,
+        //   timezone:country.timezones,
+        //   root: country.idd.root ,
+        //  suffix : country.idd.suffixes ? country.idd.suffixes[0] : 'N/A',
+        //   area:country.area,
+        //   region:country.region,
+        //   independent:country.independent,
+        //   language:country.languages ? Object.values(country.languages).join(', ') : 'N/A',
+        //   coatOfArms : country.coatOfArms.png,
+        //   map:country.maps.googleMaps,
+        //   // map:country.maps ? Object.values(country.map).join(', '):'N/A'
+        // }));
+        // console.log('RESPONSE',countryData)
         
         // Sort countries by their name's first letter
         const sortedCountries = countryData.sort((a, b) => {
@@ -122,7 +161,11 @@ const [countries, setCountries] = useState([]);
 
         // Group countries by their first letter
         const groupedCountries = groupByFirstLetter(sortedCountries);
-        
+
+       
+  
+        // setCarouselImages(carouselImages); 
+        // console.log('CAROL',carouselImages)
         setCountries(groupedCountries); // Set the sorted and grouped country data
       } catch (error) {
         console.error('Error fetching countries data:', error);
@@ -135,6 +178,8 @@ const [countries, setCountries] = useState([]);
   }, []);
 
   // Helper function to group countries by their first letter
+  
+
   const groupByFirstLetter = (countryData) => {
     const grouped = countryData.reduce((acc, country) => {
       const firstLetter = country.name.charAt(0).toUpperCase();
@@ -151,12 +196,13 @@ const [countries, setCountries] = useState([]);
       data: grouped[letter],
     }));
   };
+  const [searchText, setSearchText] = useState('');
   return (
    <SafeAreaView style={{flex: 1}} >
      
      <View style={[styles.container , isDarkMode ? styles.darkModeContainer : styles.lightModeContainer]}>
       <View style={{flexDirection:'row', marginLeft:10 , justifyContent:'space-between'}}>
-        {/* <Image source={require('../images/logo.jpg')} style={styles.RecentroundImage2}/> */}
+        {/* <Image source={require('../images/logo1.jpg')} style={styles.RecentroundImage2}/> */}
       <Text  style={[styles.exploretext, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Explore</Text>
       <View  style={{marginRight:10 , marginTop:5}}>
         <TouchableOpacity onPress={toggleTheme}>
@@ -169,9 +215,8 @@ const [countries, setCountries] = useState([]);
         </TouchableOpacity>
       </View>
       </View>
-     <TouchableOpacity onPress={move}>
-     <Searchbar/>
-     </TouchableOpacity>
+      {/* <Searchbar searchText={searchText} setSearchText={setSearchText}/> */}
+     <Searchbar searchText={searchText} setSearchText={setSearchText}/> 
       <View style={{flexDirection:'row', marginLeft:10 , marginTop:20, justifyContent:'space-between' }}>
       <TouchableOpacity onPress={openModal1}>
        <View style={styles.ifobar}>
@@ -306,8 +351,8 @@ const styles = StyleSheet.create({
         resizeMode: 'cover', // Or 'contain' depending on your preference
       },
       RecentroundImage2: {
-        width: 380,  // You can set any width you want
-        height: 32, // Same as width for a perfect circle
+        width: 200,  // You can set any width you want
+        height: 40, // Same as width for a perfect circle
         borderRadius: 10,  // Half of the width or height for a round effect
         resizeMode: 'cover', // Or 'contain' depending on your preference
       },

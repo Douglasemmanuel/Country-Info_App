@@ -6,7 +6,8 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft'
 import { useNavigation } from '@react-navigation/native'
 import { ThemeContext } from '../context/ThemeContext'
 import { API_KEY, API_URL } from '../core/credentials'
-import { useEffect , useState , useContext } from 'react'
+import Carousel from '../component/Carousel'
+import { useEffect , useState , useContext , useRef } from 'react'
 import { useRoute } from '@react-navigation/native'
 const Country = () => {
   const navigation = useNavigation()
@@ -29,7 +30,7 @@ const Country = () => {
       </View>
       </View>
      <View style={{marginTop:15}}>
-      {/* <Crod country={country}/> */}
+      <Crod country={country}/>
       <View style={{paddingTop:20}} >
       <One country={country}/>
      <Two country={country}/>
@@ -42,13 +43,23 @@ const Country = () => {
   )
 }
 const Crod =({country})=>{
+  // const images = [
+  //   country.flag ? country.flag : null,    // Check if flag URL exists
+  //   country.coatOfArms ? country.coatOfArms : null,  // Check if coatOfArms URL exists
+  //   // Add any other images you want, e.g. country.map if it exists
+  // ].filter(Boolean);
+  console.log('IMAGES' , country.images)
   return (
-    <View style={styles.RecentImagecontainer}>
+  <View>
+       {/* <View style={styles.RecentImagecontainer}>
       <Image 
-          source={{ uri: country.flag }} 
+          source={{ uri: country.coatOfArms}} 
           style={styles.RecentroundImage}
           />
-    </View>
+          
+    </View>  */}
+    <Carousel images={country.images}/>
+  </View>
   )
 }
 const One =({country})=>{
@@ -84,15 +95,15 @@ const Two =({country})=>{
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Ethic group:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>N/A</Text>
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Religion:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>N/A</Text>
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Government:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>N/A</Text>
       </View>
     </View>
   )
@@ -103,19 +114,19 @@ const Three =({country})=>{
     <View style={{ marginTop:8}}>
       <View style={{flexDirection:'row'  , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Independence:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>{country.independent}</Text>
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Area:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>{country.area}</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>{country.area}km²</Text>
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Currency:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>{country.currency.name}</Text>
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>GDP:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>N/A</Text>
       </View>
     </View>
   )
@@ -130,7 +141,7 @@ const Four =({country})=>{
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Date format:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>dd/mm/yyy</Text>
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Dailing format:</Text>
@@ -159,8 +170,8 @@ const styles = StyleSheet.create({
     backgroundColor:'white',
   },
   container:{
-    paddingLeft:10 ,
-    paddingRight:10 , 
+    paddingLeft:20 ,
+    paddingRight:20 , 
     paddingTop:10 ,
     flex: 1,
   },
