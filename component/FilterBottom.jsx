@@ -51,6 +51,13 @@ const FilterBottom = ({setIsFilterModalVisible ,isDetail1Expanded,isDetail2Expan
 const Continent =({isDetail1Expanded , handleDetail1Click})=>{
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   const [isChecked, setChecked] = useState(false);
+  const [isChecked1, setChecked1] = useState(false);
+  const [isChecked2, setChecked2] = useState(false);
+  const [isChecked3, setChecked3] = useState(false);
+  const [isChecked4, setChecked4] = useState(false);
+  const [isChecked5, setChecked5] = useState(false);
+  const [isChecked6, setChecked6] = useState(false);
+  const [isChecked7, setChecked7] = useState(false);
   return (
     <View style={{marginTop:16}}>
        <View style={{flexDirection:'row' , justifyContent:'space-between' , gap:48}}>
@@ -72,9 +79,9 @@ const Continent =({isDetail1Expanded , handleDetail1Click})=>{
     <View style={{}}>
     <Checkbox
           style={styles.checkbox}
-          value={isChecked}
-          onValueChange={setChecked}
-          color={isChecked ? 'black' : undefined}
+          value={isChecked1}
+          onValueChange={setChecked1}
+          color={isChecked1 ? 'black' : undefined}
         />
     </View>
 </View>
@@ -83,9 +90,9 @@ const Continent =({isDetail1Expanded , handleDetail1Click})=>{
     <View style={{}}>
     <Checkbox
           style={styles.checkbox}
-          value={isChecked}
-          onValueChange={setChecked}
-          color={isChecked ? 'black' : undefined}
+          value={isChecked2}
+          onValueChange={setChecked2}
+          color={isChecked2 ? 'black' : undefined}
         />
     </View>
 </View>
@@ -94,9 +101,9 @@ const Continent =({isDetail1Expanded , handleDetail1Click})=>{
     <View style={{}}>
     <Checkbox
           style={styles.checkbox}
-          value={isChecked}
-          onValueChange={setChecked}
-          color={isChecked ? 'black' : undefined}
+          value={isChecked3}
+          onValueChange={setChecked3}
+          color={isChecked3 ? 'black' : undefined}
         />
     </View>
 </View>
@@ -105,9 +112,9 @@ const Continent =({isDetail1Expanded , handleDetail1Click})=>{
     <View style={{}}>
     <Checkbox
           style={styles.checkbox}
-          value={isChecked}
-          onValueChange={setChecked}
-          color={isChecked ? 'black' : undefined}
+          value={isChecked7}
+          onValueChange={setChecked7}
+          color={isChecked7 ? 'black' : undefined}
         />
     </View>
 </View>
@@ -116,9 +123,9 @@ const Continent =({isDetail1Expanded , handleDetail1Click})=>{
     <View style={{}}>
     <Checkbox
           style={styles.checkbox}
-          value={isChecked}
-          onValueChange={setChecked}
-          color={isChecked ? 'black' : undefined}
+          value={isChecked4}
+          onValueChange={setChecked4}
+          color={isChecked4 ? 'black' : undefined}
         />
     </View>
 </View>
@@ -127,9 +134,9 @@ const Continent =({isDetail1Expanded , handleDetail1Click})=>{
     <View style={{}}>
     <Checkbox
           style={styles.checkbox}
-          value={isChecked}
-          onValueChange={setChecked}
-          color={isChecked ? 'black' : undefined}
+          value={isChecked5}
+          onValueChange={setChecked5}
+          color={isChecked5 ? 'black' : undefined}
         />
     </View>
 </View>
@@ -138,9 +145,9 @@ const Continent =({isDetail1Expanded , handleDetail1Click})=>{
     <View style={{}}>
     <Checkbox
           style={styles.checkbox}
-          value={isChecked}
-          onValueChange={setChecked}
-          color={isChecked ? 'black' : undefined}
+          value={isChecked6}
+          onValueChange={setChecked6}
+          color={isChecked6 ? 'black' : undefined}
         />
     </View>
 </View>
@@ -233,6 +240,14 @@ const Continent =({isDetail1Expanded , handleDetail1Click})=>{
 const TimeZone =({isDetail2Expanded , handleDetail2Click})=>{
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   const [isChecked, setChecked] = useState(false);
+  // const [isChecked, setChecked] = useState(false);
+  const [isChecked1, setChecked1] = useState(false);
+  const [isChecked2, setChecked2] = useState(false);
+  const [isChecked3, setChecked3] = useState(false);
+  const [isChecked4, setChecked4] = useState(false);
+  const [isChecked5, setChecked5] = useState(false);
+  const [isChecked6, setChecked6] = useState(false);
+  const [isChecked7, setChecked7] = useState(false);
   return (
     <View style={{marginTop:22}}>
        <View style={{flexDirection:'row' , justifyContent:'space-between',gap:48}}>
@@ -254,9 +269,9 @@ const TimeZone =({isDetail2Expanded , handleDetail2Click})=>{
               <View style={{}}>
               <Checkbox
                     style={styles.checkbox}
-                    value={isChecked}
-                    onValueChange={setChecked}
-                    color={isChecked ? 'black' : undefined}
+                    value={isChecked1}
+                    onValueChange={setChecked1}
+                    color={isChecked1 ? 'black' : undefined}
                   />
               </View>
           </View>
@@ -265,9 +280,9 @@ const TimeZone =({isDetail2Expanded , handleDetail2Click})=>{
               <View style={{}}>
               <Checkbox
                     style={styles.checkbox}
-                    value={isChecked}
-                    onValueChange={setChecked}
-                    color={isChecked ? 'black' : undefined}
+                    value={isChecked2}
+                    onValueChange={setChecked2}
+                    color={isChecked2 ? 'black' : undefined}
                   />
               </View>
           </View>
@@ -276,9 +291,9 @@ const TimeZone =({isDetail2Expanded , handleDetail2Click})=>{
               <View style={{}}>
               <Checkbox
                     style={styles.checkbox}
-                    value={isChecked}
-                    onValueChange={setChecked}
-                    color={isChecked ? 'black' : undefined}
+                    value={isChecked3}
+                    onValueChange={setChecked3}
+                    color={isChecked3 ? 'black' : undefined}
                   />
               </View>
           </View>
@@ -287,9 +302,9 @@ const TimeZone =({isDetail2Expanded , handleDetail2Click})=>{
               <View style={{}}>
               <Checkbox
                     style={styles.checkbox}
-                    value={isChecked}
-                    onValueChange={setChecked}
-                    color={isChecked ? 'black' : undefined}
+                    value={isChecked4}
+                    onValueChange={setChecked4}
+                    color={isChecked4 ? 'black' : undefined}
                   />
               </View>
           </View>
@@ -298,9 +313,9 @@ const TimeZone =({isDetail2Expanded , handleDetail2Click})=>{
               <View style={{}}>
               <Checkbox
                     style={styles.checkbox}
-                    value={isChecked}
-                    onValueChange={setChecked}
-                    color={isChecked ? 'black' : undefined}
+                    value={isChecked5}
+                    onValueChange={setChecked5}
+                    color={isChecked5 ? 'black' : undefined}
                   />
               </View>
           </View>
@@ -309,9 +324,9 @@ const TimeZone =({isDetail2Expanded , handleDetail2Click})=>{
               <View style={{}}>
               <Checkbox
                     style={styles.checkbox}
-                    value={isChecked}
-                    onValueChange={setChecked}
-                    color={isChecked ? 'black' : undefined}
+                    value={isChecked6}
+                    onValueChange={setChecked6}
+                    color={isChecked6 ? 'black' : undefined}
                   />
               </View>
           </View>
@@ -320,9 +335,9 @@ const TimeZone =({isDetail2Expanded , handleDetail2Click})=>{
               <View style={{}}>
               <Checkbox
                     style={styles.checkbox}
-                    value={isChecked}
-                    onValueChange={setChecked}
-                    color={isChecked ? 'black' : undefined}
+                    value={isChecked7}
+                    onValueChange={setChecked7}
+                    color={isChecked7 ? 'black' : undefined}
                   />
               </View>
           </View>
@@ -423,5 +438,9 @@ const styles = StyleSheet.create({
       },
       lightModeContainer:{
         backgroundColor:'white',
+      },
+      searchwidth:{
+        borderWidth:1,
+        borderColor:'white'
       },
 })

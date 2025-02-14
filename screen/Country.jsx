@@ -80,7 +80,7 @@ const One =({country})=>{
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text  style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Motto:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey' ,marginLeft:5}}>333333</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey' ,marginLeft:5}}>N/A</Text>
       </View>
     </View>
   )
@@ -114,7 +114,7 @@ const Three =({country})=>{
     <View style={{ marginTop:8}}>
       <View style={{flexDirection:'row'  , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Independence:</Text>
-        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>{country.independent}</Text>
+        <Text style={{ fontWeight:'bold' , fontSize:18 , color:'grey',marginLeft:5}}>N/A</Text>
       </View>
       <View style={{flexDirection:'row' , marginTop:8}}>
         <Text style={[styles.pagtitle, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Area:</Text>

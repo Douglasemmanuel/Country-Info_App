@@ -6,17 +6,19 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons/faMagnifyin
 import { useState , useContext } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { ThemeContext } from '../context/ThemeContext'
-const Searchbar = ({searchText , setSearchText}) => {
+const Searchbar = ({searchText , setSearchText,handleInputChange , toggle , setButtonDetail}) => {
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
     // const [searchText, setSearchText] = useState('');
     const navigation = useNavigation()
     const handleClearText = () => {
       setSearchText('');
-      navigation.goBack(); // Assuming you're using React Navigation to navigate
+      toggle()
+      // navigation.goBack(); // Assuming you're using React Navigation to navigate
     };
+    console.log('COUNTY-NAME', searchText)
   return (
     <View style={styles.container2}>
-      <View style={styles.searchBarContainer}>
+      <View style={[styles.searchBarContainer,isDarkMode ? styles.darkModeContainer : styles.lightModeContainer ]}>
         {/* Search Icon */}
         <FontAwesomeIcon icon={faMagnifyingGlass} size={20}   color="#888"    style={styles.icon}/>  
       
@@ -24,13 +26,13 @@ const Searchbar = ({searchText , setSearchText}) => {
 
         {/* Search Input */}
         <TextInput
-          style={styles.searchInput}
+          style={[styles.searchInput, isDarkMode ? styles.darkModeText : styles.lightModeText]}
           placeholder="Search Country"
           placeholderTextColor="#888"
           value={searchText}
           textAlignVertical="center"
           textAlign="center"
-          onChangeText={setSearchText}
+          onChangeText={handleInputChange}
         />
         {searchText.length > 0 && (
         <TouchableOpacity onPress={ handleClearText}>
@@ -48,6 +50,10 @@ const styles = StyleSheet.create({
     container2: {
         marginTop:25,
         marginLeft:10,
+      },
+      searchwidth:{
+        borderWidth:1,
+        borderColor:'white'
       },
       searchBarContainer: {
         flexDirection: 'row',
@@ -70,5 +76,17 @@ const styles = StyleSheet.create({
     height: '100%',
     fontSize: 16,
     color: '#333',
+  },
+  darkModeText:{
+    color:'white'
+  },
+  lightModeText:{
+    color:'black',
+  },
+  darkModeContainer:{
+    backgroundColor:'#2F3A4D'
+  },
+  lightModeContainer:{
+    backgroundColor:'white',
   },
 })

@@ -4,7 +4,7 @@ import { useRef, useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCircleChevronLeft } from '@fortawesome/free-solid-svg-icons/faCircleChevronLeft'
 import { faCircleChevronRight } from '@fortawesome/free-solid-svg-icons/faCircleChevronRight'
-const MAX_WIDTH = Dimensions.get('screen').width / 1.1
+const MAX_WIDTH = Dimensions.get('screen').width / 1.09
 
 
 const Carousel = ({ images }) => {
@@ -53,10 +53,10 @@ const Carousel = ({ images }) => {
         </View>
       </View>
       <View style={styles.buttoncontainer}>
-        <TouchableOpacity  onPress={handleAnimationBackward}>
+        <TouchableOpacity  onPress={handleAnimationBackward} style={styles.ebutton}>
         <FontAwesomeIcon icon={faCircleChevronLeft}  size={25} color='white'/>
         </TouchableOpacity>
-        <TouchableOpacity  onPress={handleAnimationForward}>
+        <TouchableOpacity  onPress={handleAnimationForward} style={styles.ebutton}>
         <FontAwesomeIcon icon={faCircleChevronRight}  size={25} color='white'/>
         </TouchableOpacity>
       </View>
@@ -105,8 +105,25 @@ const styles = StyleSheet.create({
       borderColor:'white',
       marginHorizontal:10,
       marginBottom:10,
+      shadowColor: '#000', // Black shadow
+      shadowOffset: { width: 0, height: 4 }, // Shadow offset
+      shadowOpacity: 0.3, // Transparency of shadow
+      shadowRadius: 4, // Blur radius of shadow
+      elevation: 5, // For Android
     },
     activeIndicator :{
       backgroundColor:'white',
-    }
+    },
+    ebutton: {
+      // backgroundColor: 'black', // Adjust background color if needed
+      padding: 10,
+      borderRadius: 50, // Adjust the size as per your design
+      justifyContent: 'center',
+      alignItems: 'center',
+      shadowColor: '#000', // Black shadow
+      shadowOffset: { width: 0, height: 4 }, // Shadow offset
+      shadowOpacity: 0.3, // Transparency of shadow
+      shadowRadius: 4, // Blur radius of shadow
+      elevation: 5, // For Android
+    },
 })

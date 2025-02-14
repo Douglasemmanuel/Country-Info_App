@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View , KeyboardAvoidingView , TouchableWithoutFeedback , Pressable , TouchableOpacity , ScrollView } from 'react-native'
+import { StyleSheet, Text, View , KeyboardAvoidingView , TouchableWithoutFeedback,Platform , Pressable , TouchableOpacity , ScrollView , Keyboard } from 'react-native'
 import React from 'react'
 import { SafeAreaView  , Image , Modal , Dimensions , SectionList , ActivityIndicator} from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -9,12 +9,13 @@ import {faFilter} from '@fortawesome/free-solid-svg-icons/faFilter'
 import Searchbar from '../component/Searchbar'
 import { useNavigation } from '@react-navigation/native'
 import { API_KEY, API_URL } from '../core/credentials'
-import { useEffect , useState , useContext } from 'react'
+import { useEffect , useState , useContext , useCallback } from 'react'
 import { ThemeContext } from '../context/ThemeContext'
 import LanguageBottom from '../component/LanguageBottom'
 import FilterBottom from '../component/FilterBottom'
 import axios from 'axios'
 import { FlatList } from 'react-native'
+import _ from 'lodash';
 const Home = () => {
   // const headers = {
   //   'Authorization': `Bearer ${API_KEY}`,
@@ -58,33 +59,8 @@ const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 const [countries, setCountries] = useState([]);
 const [carouselImages , setCarouselImages] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   // Fetching the country data when the component mounts
-  //   const fetchCountries = async () => {
-  //     try {
-  //       const response = await axios.get('https://restcountries.com/v3.1/all');
-  //       const countryNames = response.data.map(country => country.name.common);
-  //       const info = response.data
-  //       const roo = info.independent
-  //       console.log('response' , countryNames)
-
-  //       // Sorting countries by the first letter of their common name
-  //       const sortedCountries = countryNames.sort((a, b) => {
-  //         const nameA = a.name.common.toLowerCase();  // Lowercase country name for case-insensitive sorting
-  //         const nameB = b.name.common.toLowerCase();
-  //         return nameA.localeCompare(nameB);  // Compare names alphabetically
-  //       });
-  //       setCountries(sortedCountries); // Set the sorted countries in state
-  //     } catch (error) {
-  //       console.error('Error fetching countries data:', error);
-  //     } finally {
-  //       setLoading(false); // Stop loading
-  //     }
-  //   };
-
-  //   fetchCountries();
-  // }, []);
   useEffect(() => {
     const fetchCountries = async () => {
       try {
@@ -164,8 +140,6 @@ const [carouselImages , setCarouselImages] = useState([]);
 
        
   
-        // setCarouselImages(carouselImages); 
-        // console.log('CAROL',carouselImages)
         setCountries(groupedCountries); // Set the sorted and grouped country data
       } catch (error) {
         console.error('Error fetching countries data:', error);
@@ -197,11 +171,89 @@ const [carouselImages , setCarouselImages] = useState([]);
     }));
   };
   const [searchText, setSearchText] = useState('');
+  const [countryName, setCountryName] = useState(''); // State to store user input
+  const [countryDetails, setCountryDetails] = useState(null);
+
+// Function to fetch country details
+
+const debouncedSearch = useCallback(
+  _.debounce((value) => {
+    fetchCountryDetails(value); // Trigger the API call with debounced value
+  }, 1000), // Adjust the delay (in milliseconds) as needed
+  []
+);
+useEffect(() => {
+  debouncedSearch(searchText );
+}, [searchText , debouncedSearch]); // Dependency array
+const handleInputChange = (text) => {
+ setSearchText(text);
+  debouncedSearch(text); // Trigger debounce function with input value
+ 
+};
+const fetchCountryDetails = async (searchText) => {
+  if (!searchText) return; // Don't fetch if input is empty
+  setLoading(true);
+  setError(null); // Reset previous error
+
+  try {
+    const response = await axios.get(`https://restcountries.com/v3.1/name/${searchText}/`);
+    const country = response.data[0];  // Since we're expecting only one country in the response
+
+// Initialize an array to store images (flag and coatOfArms)
+const images = [];
+
+// Add flag if it exists
+if (country.flags && country.flags.png) {
+  images.push(country.flags.png);
+}
+
+// Add coat of arms if it exists
+if (country.coatOfArms && country.coatOfArms.png) {
+  images.push(country.coatOfArms.png);
+}
+
+const countryInfo = {
+  index: 0,  // Index is usually not needed in this case, since there's just one country
+  name: country.name.common,
+  capital: country.capital ? country.capital[0] : 'N/A', // Some countries may not have a capital
+  images: images, // Array containing flag and coat of arms
+  population: country.population,
+  currency: country.currencies ? Object.values(country.currencies)[0] : 'N/A',
+  driving: country.car ? country.car.side : 'N/A',
+  timezone: country.timezones ? country.timezones.join(', ') : 'N/A', // Ensure it's a string
+  root: country.idd ? country.idd.root : 'N/A',
+  suffix: country.idd && country.idd.suffixes ? country.idd.suffixes[0] : 'N/A',
+  area: country.area,
+  flag: country.flags ? country.flags.png : 'N/A',
+  coatOfArms: country.coatOfArms ? country.coatOfArms.png : 'N/A',
+  region: country.region,
+  independent: country.independent,
+  language: country.languages ? Object.values(country.languages).join(', ') : 'N/A',
+};
+
+console.log(countryInfo);  // You can use this object to display in your UI
+
+
+    // Update state with the selected country data
+    setCountryDetails(countryInfo);
+    setLoading(false);
+    console.log('COUNTRY' , countryData)
+  } catch (err) {
+    setError('Country not found!'); // Set error if fetch fails
+    setLoading(false);
+  }
+};
+const [showButton , setButtonDetail] = useState(true)
+const toggleSwitch = ()=>{
+  // setButtonDetail((previous)=> !previous)
+  setButtonDetail(showButton)
+  console.log('hiiii')
+}
   return (
    <SafeAreaView style={{flex: 1}} >
-     
-     <View style={[styles.container , isDarkMode ? styles.darkModeContainer : styles.lightModeContainer]}>
-      <View style={{flexDirection:'row', marginLeft:10 , justifyContent:'space-between'}}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} style={{flex:1}}>
+      <View style={[styles.container , isDarkMode ? styles.darkModeContainer : styles.lightModeContainer]}>
+      <View style={{flexDirection:'row', marginLeft:10 , justifyContent:'space-between' , marginTop:3}}>
         {/* <Image source={require('../images/logo1.jpg')} style={styles.RecentroundImage2}/> */}
       <Text  style={[styles.exploretext, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Explore</Text>
       <View  style={{marginRight:10 , marginTop:5}}>
@@ -215,51 +267,68 @@ const [carouselImages , setCarouselImages] = useState([]);
         </TouchableOpacity>
       </View>
       </View>
-      {/* <Searchbar searchText={searchText} setSearchText={setSearchText}/> */}
-     <Searchbar searchText={searchText} setSearchText={setSearchText}/> 
+      {/* <Searchbar /> */}
+      <Searchbar searchText={searchText} setSearchText={setSearchText}   handleInputChange={handleInputChange} toggle={toggleSwitch} showButton={showButton} setButtonDetail={setButtonDetail} />
+     {/* <Searchbar   countryName={countryName}  setCountryName={setCountryName}  fetchCountryDetails={fetchCountryDetails}/>  */}
       <View style={{flexDirection:'row', marginLeft:10 , marginTop:20, justifyContent:'space-between' }}>
       <TouchableOpacity onPress={openModal1}>
-       <View style={styles.ifobar}>
+       <View style={[styles.ifobar, isDarkMode ? styles.darkModeContainer : styles.lightModeContainer]}>
       <View style={{padding:10 , flexDirection:'row'}}>
-        <FontAwesomeIcon icon={faGlobe} />
-          <Text style={{fontWeight:'450' , fontSize:14 , marginLeft:5  , color:'black'}}>ENG</Text>
+        <FontAwesomeIcon icon={faGlobe} color={ isDarkMode ?  'white' : 'black'} />
+          <Text style={[styles.enf, isDarkMode ? styles.darkModeText : styles.lightModeText]}>ENG</Text>
         </View>
        </View>
       </TouchableOpacity>
        <TouchableOpacity onPress={openModal2}>
-       <View style={styles.ifobar1}>
+       <View style={[styles.ifobar1, isDarkMode ? styles.darkModeContainer : styles.lightModeContainer]}>
        <View style={{padding:10 , flexDirection:'row'}}>
-        <FontAwesomeIcon icon={faFilter} />
-          <Text style={{fontWeight:'450' , fontSize:14 , marginLeft:5 , color:'black'}}>Filter</Text>
+        <FontAwesomeIcon icon={faFilter}  color={ isDarkMode ?  'white' : 'black'} />
+          <Text style={[styles.enf, isDarkMode ? styles.darkModeText : styles.lightModeText]}>Filter</Text>
         </View>
        </View>
        </TouchableOpacity>
       </View>
-      {loading ? (
+      {!countryDetails && showButton  ? (
+        <View>
+        {loading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <FlatList
+            data={countries}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <View style={{marginLeft:20}}>
+                {/* Render section header for each letter */}
+                {renderHeader(item.title)}
+                {item.data.map((country, idx) => (
+               <Detail key={idx} item={country} />
+              ))}
+              </View>
+            )}
+          />
+        )}
+        </View>
+      ):(
+           <View>
+       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-        <FlatList
-          data={countries}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={{marginLeft:20}}>
-              {/* Render section header for each letter */}
-              {renderHeader(item.title)}
-              {item.data.map((country, idx) => (
-             <Detail key={idx} item={country} />
-            ))}
-            </View>
-          )}
-        />
+        <SearchDetail  item={countryDetails} />
+          
+        
       )}
-        {/* <Detail item={item}/> */}
+       </View> 
+
+      
+      )}
+       
       <Modal
       transparent={true}
       animationType="slide"
       visible={islanguageModalVisible}
       onRequestClose={()=>  setIsLanguageModalVisible(false)}
     >
-       <View style={[styles.modalContainer, { height: modalHeight }, isDarkMode ? styles.darkModeContainer : styles.lightModeContainer]}>
+       <View style={[styles.modalContainer, { height: modalHeight }, isDarkMode ? styles.darkModeContainer : styles.lightModeContainer,isDarkMode && styles.searchwidth]}>
       <LanguageBottom  setIsLanguageModalVisible={setIsLanguageModalVisible}/>
       </View>
     </Modal>
@@ -270,6 +339,7 @@ const [carouselImages , setCarouselImages] = useState([]);
       onRequestClose={()=>  setIsFilterModalVisible(false)}
     >
       <View style={[styles.modalContainer, 
+       isDarkMode && styles.searchwidth,
         // { height: FilterHeight },
         {
           height: (() => {
@@ -299,6 +369,9 @@ const [carouselImages , setCarouselImages] = useState([]);
       </View>
     </Modal> */}
     </View>
+      </TouchableWithoutFeedback>
+     
+     
    </SafeAreaView>
   )
 }
@@ -317,10 +390,40 @@ const Detail =({item})=>{
   }
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
     return (
-        <View style={{ marginTop:20}}>
+        <View style={{ marginTop:25}}>
             {/* <Text style={{fontWeight:'bold' , color:'gray' , fontSize:18}}>hhh</Text> */}
             <TouchableWithoutFeedback onPress={move}>
             <View style={{flexDirection:'row' }} >
+                 <View style={styles.RecentImagecontainer} >
+                <Image 
+                source={{ uri: item.flag }}  
+                style={styles.RecentroundImage}
+                />
+             </View>
+                <View style={{flex:5 , marginTop:5}}>
+                <Text style={[styles.county_name, isDarkMode ? styles.darkModeText : styles.lightModeText]}>{item.name}</Text>
+                <Text style={{fontWeight:'500' , color:'gray' , fontSize:16}}>{item.capital}</Text>
+                </View>
+            </View>
+
+            </TouchableWithoutFeedback>
+        </View>
+    )
+}
+const SearchDetail =({item})=>{
+  const navigation = useNavigation()
+  const countryId = item.name
+  const title =  item.name.slice(0,1)
+  // console.log('COUNTRY',countryName)
+  function move(){
+    navigation.navigate('country' ,{ country: item })
+  }
+  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+    return (
+        <View style={{ marginTop:20}}>
+            <Text style={{fontWeight:'bold' , color:'gray' , fontSize:18}}>{title}</Text>
+            <TouchableWithoutFeedback onPress={move} >
+            <View style={{flexDirection:'row',marginTop:10 }} >
                  <View style={styles.RecentImagecontainer} >
                 <Image 
                 source={{ uri: item.flag }}  
@@ -422,6 +525,15 @@ const styles = StyleSheet.create({
       county_name:{
         fontWeight:'bold',
         fontSize:18
+      },
+      enf:{
+        fontWeight:'450',
+        fontSize :14,
+        marginLeft:5
+      },
+      searchwidth:{
+        borderWidth:1,
+        borderColor:'gray'
       },
       icon:{
 
