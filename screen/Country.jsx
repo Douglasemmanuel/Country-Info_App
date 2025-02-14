@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View , Pressable } from 'react-native'
+import { StyleSheet, Text, View , Pressable , ScrollView } from 'react-native'
 import React from 'react'
 import { SafeAreaView  , Image} from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -32,10 +32,12 @@ const Country = () => {
      <View style={{marginTop:15}}>
       <Crod country={country}/>
       <View style={{paddingTop:20}} >
+      <ScrollView Style={styles.scrollViewContainer}>
       <One country={country}/>
      <Two country={country}/>
      <Three country={country}/>
      <Four country={country}/>
+      </ScrollView>
       </View>
      </View>
     </View>
@@ -193,5 +195,9 @@ const styles = StyleSheet.create({
     height: 200, // Same as width for a perfect circle
     borderRadius: 10,  // Half of the width or height for a round effect
     resizeMode: 'cover', // Or 'contain' depending on your preference
+  },
+  scrollViewContainer: {
+    // padding: 3,
+    // flexGrow: 1,  // Ensures the scroll view behaves correctly with multiple components
   },
 })

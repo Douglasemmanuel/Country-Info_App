@@ -13,8 +13,16 @@ const Searchbar = ({searchText , setSearchText,handleInputChange , toggle , setB
     const handleClearText = () => {
       setSearchText('');
       toggle()
+      setButtonDetail(true)
       // navigation.goBack(); // Assuming you're using React Navigation to navigate
     };
+    // const handleSearchChange = (text) => {
+    //   setSearchText(text);
+    //   if (text.length === 0) {
+    //     setButtonDetail(false); // If search is cleared, show normal component
+    //   } else {
+    //     setSearchText(true); // If text exists, we are in search mode
+    //   }
     console.log('COUNTY-NAME', searchText)
   return (
     <View style={styles.container2}>

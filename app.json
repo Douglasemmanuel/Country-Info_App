@@ -2,6 +2,14 @@
   "expo": {
     "name": "country_app",
     "slug": "country_app",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "plugins": [
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "d3ab667b-3236-4428-b334-100102eaf52e"
+      }
+    }
   }
 }

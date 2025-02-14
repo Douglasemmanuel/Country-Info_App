@@ -173,7 +173,12 @@ const [carouselImages , setCarouselImages] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [countryName, setCountryName] = useState(''); // State to store user input
   const [countryDetails, setCountryDetails] = useState(null);
-
+  const [showButton , setButtonDetail] = useState(true)
+  const toggleSwitch = ()=>{
+    // setButtonDetail((previous)=> !previous)
+    setButtonDetail(true)
+    console.log('hiiii')
+  }
 // Function to fetch country details
 
 const debouncedSearch = useCallback(
@@ -243,12 +248,7 @@ console.log(countryInfo);  // You can use this object to display in your UI
     setLoading(false);
   }
 };
-const [showButton , setButtonDetail] = useState(true)
-const toggleSwitch = ()=>{
-  // setButtonDetail((previous)=> !previous)
-  setButtonDetail(showButton)
-  console.log('hiiii')
-}
+
   return (
    <SafeAreaView style={{flex: 1}} >
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} style={{flex:1}}>
@@ -288,7 +288,18 @@ const toggleSwitch = ()=>{
        </View>
        </TouchableOpacity>
       </View>
-      {!countryDetails && showButton  ? (
+      {searchText !== ''  && countryDetails ? (
+           <View>
+           {loading ? (
+            <ActivityIndicator size="large" color="#0000ff" />
+          ) : (
+            <SearchDetail  item={countryDetails} />
+              
+            
+          )}
+           </View> 
+      ):(
+        
         <View>
         {loading ? (
           <ActivityIndicator size="large" color="#0000ff" />
@@ -308,17 +319,6 @@ const toggleSwitch = ()=>{
           />
         )}
         </View>
-      ):(
-           <View>
-       {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
-        <SearchDetail  item={countryDetails} />
-          
-        
-      )}
-       </View> 
-
       
       )}
        

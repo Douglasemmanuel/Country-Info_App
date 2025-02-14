@@ -377,18 +377,22 @@ const styles = StyleSheet.create({
         fontWeight:'400',
         // flex:4,
         fontSize:16,
+        // fontFamily: 'FiraSans'
       },
       bofo:{
         fontSize:20,
-        fontWeight:'800'
+        fontWeight:'800',
+        // fontFamily: 'FiraSans'
       },
       tagd:{
         fontSize:16,
-        fontWeight:'400'
+        fontWeight:'400',
+        // fontFamily: 'FiraSans'
       },
       tagd2:{
         fontSize:20,
-        fontWeight:'800'
+        fontWeight:'800',
+        // fontFamily: 'FiraSans'
       },
       buttonWithBorder: {
         // backgroundColor: 'white', // Green background
@@ -421,11 +425,13 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: 'center',
         fontWeight:'bold',
+        // fontFamily: 'FiraSans'
       },
       buttonText1: {
         // color: 'black',
         fontSize: 16,
         textAlign: 'center',
+        // fontFamily: 'FiraSans'
       },
       darkModeText:{
         color:'white'
